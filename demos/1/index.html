@@ -4,18 +4,39 @@
     <meta charset="UTF-8">
     <title>Particles</title>
     <style>
-
+        body {
+            background: black;
+        }
+        #main {
+            height: 500px;
+            width: 800px;
+        }
     </style>
 </head>
 <body>
-    <canvas id="main"></canvas>
+    <canvas id="main" width="800" height="500"></canvas>
 
-    <!--<script src="js/Particle.js"></script>-->
-    <!--<script src="js/ParticleLines.js"></script>-->
+    <script src="js/Particle.js"></script>
+    <script src="js/ParticleEngine.js"></script>
+    <script src="js/ParticleExploder.js"></script>
+    <script src="js/ParticleEmitter.js"></script>
 
     <script>
         var canvas = document.getElementById('main');
-        var particles = new Particles(canvas, {particlesAmount: 100});
+        var ctx = canvas.getContext('2d');
+        var engine = new ParticleEngine(canvas);
+        var exploder = new ParticleExploder(canvas);
+        var emitter = new ParticleEmitter(canvas);
+
+        function tick () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            engine.draw();
+            exploder.draw();
+            emitter.draw();
+        }
+
+        setInterval(tick, 1000/60);
+
     </script>
 </body>
 </html>

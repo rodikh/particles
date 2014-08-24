@@ -2,7 +2,19 @@
     'use strict';
 
 
-    var ParticleEngine = function (canvas, options) {
+    function ExploderParticle (point, velocity, bounds) {
+        Particle.call(this, point, velocity, bounds);
+    }
+
+    ExploderParticle.prototype = Object.create(Particle.prototype);
+    ExploderParticle.prototype.hasGravity = true;
+    ExploderParticle.prototype.hasBounds = false;
+    ExploderParticle.prototype.isDecaying = true;
+    ExploderParticle.prototype.color = '0,255,0';
+
+
+
+    var ParticleExploder = function (canvas, options) {
         if (!options) {
             options = {};
         }
@@ -15,66 +27,69 @@
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
 
-        this.createParticles(this.particlesAmount);
+        this.canvas.onclick = function (evt) {
+            exploder.explode(evt);
+        }
+    };
 
-        setInterval(this.tick.bind(this), 1000 / this.fps);
+    ParticleExploder.prototype.explode = function (point) {
+        this.createParticles(point, this.particlesAmount);
+        if (!this.interval) {
+            this.interval = setInterval(this.tick.bind(this), 1000 / this.fps);
+        }
     };
 
     /**
      * Creates random particles
      * @param amount Amount of particles to create
      */
-    ParticleEngine.prototype.createParticles = function (amount) {
+
+    ParticleExploder.prototype.createParticles = function (point, amount) {
         var i;
         for (i = 0; i < amount; i++) {
-            var point = {
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height
-            };
             var velocity = {
                 x: Math.random() * this.maxVelocity * 2 - this.maxVelocity,
                 y: Math.random() * this.maxVelocity * 2 - this.maxVelocity
             };
-            this.particles.push(new Particle(point, velocity, this.canvas));
+            this.particles.push(new ExploderParticle(point, velocity, this.canvas));
         }
     };
 
-    /**
-     * Draws a single particle
-     */
-    ParticleEngine.prototype.drawParticle = function (particle){
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 1, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-    };
 
     /**
      * Draws connecting lines between all particles withing MIN_DISTANCE of each other
      */
-    ParticleEngine.prototype.draw = function () {
+    ParticleExploder.prototype.draw = function () {
         var length = this.particles.length,
             i;
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (i = 0; i < length; i++) {
-            this.drawParticle(this.particles[i]);
+            this.particles[i].draw(this.ctx);
         }
     };
 
     /**
      * Global loop function, draws and moves particles
      */
-    ParticleEngine.prototype.tick = function () {
+    ParticleExploder.prototype.tick = function () {
         var length = this.particles.length,
             i;
 
         for (i = 0; i < length; i++) {
             this.particles[i].move();
+            if (this.particles[i].isDecaying && this.particles[i].vitality < 1) {
+                this.particles.splice(i,1);
+                i--;
+                length--;
+            }
         }
-        this.draw();
+
+        if (this.particles.length === 0) {
+            clearInterval(this.interval);
+            this.interval = false;
+        }
     };
 
-    window.ParticleEngine = ParticleEngine;
+    window.ParticleExploder = ParticleExploder;
 
 } (window.Particle));
