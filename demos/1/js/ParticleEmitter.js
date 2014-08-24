@@ -1,21 +1,23 @@
 (function (Particle) {
     'use strict';
 
-
-    function EmitterParticle (point, velocity, bounds) {
-        Particle.call(this, point, velocity, bounds);
-    }
-
-    EmitterParticle.prototype = Object.create(Particle.prototype);
-    EmitterParticle.prototype.hasGravity = false;
-    EmitterParticle.prototype.hasBounds = false;
-    EmitterParticle.prototype.isDecaying = true;
-    EmitterParticle.prototype.color = '255,0,0';
-
-
     var ParticleEmitter = function (canvas, options) {
         if (!options) {
             options = {};
+        }
+
+        this.EmitterParticle = function (point, velocity, bounds) {
+            Particle.call(this, point, velocity, bounds);
+        };
+
+        this.EmitterParticle.prototype = Object.create(Particle.prototype);
+        this.EmitterParticle.prototype.hasGravity = false;
+        this.EmitterParticle.prototype.hasBounds = false;
+        this.EmitterParticle.prototype.isDecaying = true;
+        this.EmitterParticle.prototype.color = '255,0,0';
+
+        if (options.particleColor) {
+            this.EmitterParticle.prototype.color = options.particleColor;
         }
 
         this.maxVelocity = options.maxVelocityRandom || 0.3;
@@ -43,7 +45,7 @@
                 x: Math.random() * this.maxVelocity * 2 - this.maxVelocity + vector.x,
                 y: Math.random() * this.maxVelocity * 2 - this.maxVelocity + vector.y
             };
-            this.particles.push(new EmitterParticle(point, velocity, this.canvas));
+            this.particles.push(new this.EmitterParticle(point, velocity, this.canvas));
         }
     };
 

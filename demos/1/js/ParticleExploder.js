@@ -1,23 +1,23 @@
 (function (Particle) {
     'use strict';
 
-
-    function ExploderParticle (point, velocity, bounds) {
-        Particle.call(this, point, velocity, bounds);
-    }
-
-    ExploderParticle.prototype = Object.create(Particle.prototype);
-    ExploderParticle.prototype.hasGravity = true;
-    ExploderParticle.prototype.hasBounds = false;
-    ExploderParticle.prototype.isDecaying = true;
-    ExploderParticle.prototype.color = '0,255,0';
-
-
-
     var ParticleExploder = function (canvas, options) {
         if (!options) {
             options = {};
         }
+
+        this.ExploderParticle = function (point, velocity, bounds) {
+            Particle.call(this, point, velocity, bounds);
+        };
+
+        this.ExploderParticle.prototype = Object.create(Particle.prototype);
+        this.ExploderParticle.prototype.hasGravity = true;
+        this.ExploderParticle.prototype.hasBounds = false;
+        this.ExploderParticle.prototype.isDecaying = true;
+        this.ExploderParticle.prototype.color = '255,255,0';
+
+
+        var self = this;
 
         this.maxVelocity = options.maxVelocity || 1;
         this.particlesAmount = options.particlesAmount || 100;
@@ -28,7 +28,8 @@
         this.ctx = canvas.getContext('2d');
 
         this.canvas.onclick = function (evt) {
-            exploder.explode(evt);
+            var point = {x: evt.x - self.canvas.offsetLeft, y: evt.y - self.canvas.offsetTop};
+            exploder.explode(point);
         }
     };
 
@@ -51,7 +52,7 @@
                 x: Math.random() * this.maxVelocity * 2 - this.maxVelocity,
                 y: Math.random() * this.maxVelocity * 2 - this.maxVelocity
             };
-            this.particles.push(new ExploderParticle(point, velocity, this.canvas));
+            this.particles.push(new this.ExploderParticle(point, velocity, this.canvas));
         }
     };
 

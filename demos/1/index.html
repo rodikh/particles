@@ -26,13 +26,17 @@
         var ctx = canvas.getContext('2d');
         var engine = new ParticleEngine(canvas);
         var exploder = new ParticleExploder(canvas);
-        var emitter = new ParticleEmitter(canvas);
+        var emitter1 = new ParticleEmitter(canvas);
+        var emitter2 = new ParticleEmitter(canvas, {point: {x:50, y: 100}, particleColor: '0,255,0'});
+        var emitter3 = new ParticleEmitter(canvas, {point: {x:50, y: 150}, particleColor: '0,0,255'});
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             engine.draw();
             exploder.draw();
-            emitter.draw();
+            emitter1.draw();
+            emitter2.draw();
+            emitter3.draw();
         }
 
         setInterval(tick, 1000/60);
