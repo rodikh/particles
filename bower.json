@@ -1,0 +1,13 @@
+{
+    "name": "rodikh.particles",
+    "version": "0.0.1",
+    "ignore": [
+        "/grunt",
+        "/node_modules",
+        "gruntfile.js",
+        "package.json",
+        ".jshintrc",
+        ".jscs.json",
+        ".gitignore"
+    ]
+}

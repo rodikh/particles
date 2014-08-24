@@ -1,0 +1,9 @@
+{
+    "name": "rodik.particles",
+    "author": "Rodik Hanukaev",
+    "devDependencies": {
+        "grunt": "0.4.x",
+        "grunt-contrib-jshint": "0.10.*",
+        "grunt-jscs-checker": "0.4.*"
+    }
+}
