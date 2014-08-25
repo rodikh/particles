@@ -18,7 +18,7 @@
     Particle.prototype.isDecaying = false;
     Particle.prototype.color = '255,255,255';
 
-    Particle.prototype.move = function () {
+    Particle.prototype.update = function () {
         // add velocity to position
         this.x += this.vx;
         this.y += this.vy;

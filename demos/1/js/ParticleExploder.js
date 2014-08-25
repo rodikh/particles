@@ -77,7 +77,7 @@
             i;
 
         for (i = 0; i < length; i++) {
-            this.particles[i].move();
+            this.particles[i].update();
             if (this.particles[i].isDecaying && this.particles[i].vitality < 1) {
                 this.particles.splice(i,1);
                 i--;
