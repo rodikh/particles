@@ -6,18 +6,27 @@
     <style>
         body {
             background: black;
+            color: white;
         }
         #main {
-            height: 500px;
-            width: 800px;
+            height: 600px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <canvas id="main" width="800" height="500"></canvas>
+    <canvas id="main" width="100" height="600"></canvas>
 
     <div class="console">
-        <div><span>checks:</span><span class="console_checks"></span></div>
+        <div><input type="checkbox" id="particleLines" checked="checked"><label for="particleLines">Particle Lines</label></div>
+        <div><input type="checkbox" id="gridLines"><label for="gridLines">Grid Lines</label></div>
+        <div><input type="checkbox" id="nodeConnections"><label for="nodeConnections">Outline Collision Checks</label></div>
+        <br>
+        <div><input type="checkbox" id="useTree" checked="checked"><label for="useTree">Use Quad Tree for collision detection</label></div>
+        <br>
+        <div>
+            <span>Number of Checks for collision detection: <span id="numChecks"></span></span>
+        </div>
     </div>
 
     <script src="js/Particle.js"></script>
@@ -27,7 +36,20 @@
     <script>
         var canvas = document.getElementById('main');
         var ctx = canvas.getContext('2d');
-        var engine = new ParticleEngine(canvas, {particlesAmount: 40, maxVelocity: 0.5});
+        var engine = new ParticleEngine(canvas, {particlesAmount: 100, maxVelocity: 0.5});
+
+        document.getElementById('useTree').onclick = function (evt) {
+            engine.useTree = this.checked;
+        };
+        document.getElementById('particleLines').onclick = function (evt) {
+            engine.particleLines = this.checked;
+        };
+        document.getElementById('gridLines').onclick = function (evt) {
+            engine.gridLines = this.checked;
+        };
+        document.getElementById('nodeConnections').onclick = function (evt) {
+            engine.nodeConnections = this.checked;
+        };
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);

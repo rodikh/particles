@@ -12,8 +12,14 @@
         this.particles = [];
         this.fps = options.fps || 60;
 
+        this.particleLines = true;
+        this.useTree = true;
+
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
+
+        window.addEventListener('resize', this.resizeCanvas.bind(this), false);
+        this.resizeCanvas();
 
         this.createParticles(this.particlesAmount);
 
@@ -22,7 +28,16 @@
         this.quad = new QuadTree(0, quadBounds);
 
         setInterval(this.tick.bind(this), 1000 / this.fps);
+
     };
+
+    ParticleEngine.prototype.resizeCanvas = function () {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+
+        this.draw();
+    };
+
 
     /**
      * Creates random particles
@@ -53,15 +68,49 @@
         var numChecks = 0;
 
         for (i = 0; i < length; i++) {
-
-            var neighbours = this.quad.retreiveParticle(this.particles[i]);
-            var isColliding = this.checkCollision(this.particles[i], neighbours);
             this.particles[i].draw(this.ctx);
+            var neighbours;
+            if (this.useTree) {
+                neighbours = this.quad.retreiveParticle(this.particles[i]);
+            } else {
+                neighbours = this.particles;
+            }
+            numChecks += neighbours.length;
+
+            if (this.particleLines) {
+                this.drawParticleLines(this.particles[i], neighbours);
+            }
         }
 
-        this.quad.drawNodeGrid(this.ctx);
-//        this.quad.drawInnerConnections(this.ctx);
+        document.getElementById('numChecks').innerHTML = numChecks;
+
+        if (this.gridLines && this.useTree) {
+            this.quad.drawNodeGrid(this.ctx);
+        }
+
+        if (this.nodeConnections) {
+            if (this.useTree) {
+                this.quad.drawInnerConnections(this.ctx);
+            } else {
+                length = this.particles.length;
+                var j,k;
+                for (j = 0; j < length; j++) {
+                    for (k = j; k < length; k++) {
+                        debugLine(this.particles[j], this.particles[k], 'red', ctx);
+                    }
+                }
+            }
+        }
     };
+
+    function debugLine(p1, p2, color, ctx){
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke();
+    }
+
 
     /**
      * Global loop function, draws and moves particles
@@ -112,7 +161,7 @@
         ctx.stroke();
     }
 
-    ParticleEngine.prototype.checkCollision = function (particle, neighbours) {
+    ParticleEngine.prototype.drawParticleLines = function (particle, neighbours) {
         var length = neighbours.length,
             i;
 
