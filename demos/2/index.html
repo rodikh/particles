@@ -16,6 +16,10 @@
 <body>
     <canvas id="main" width="800" height="500"></canvas>
 
+    <div class="console">
+        <div><span>checks:</span><span class="console_checks"></span></div>
+    </div>
+
     <script src="js/Particle.js"></script>
     <script src="js/QuadTree.js"></script>
     <script src="js/ParticleEngine.js"></script>
@@ -23,7 +27,7 @@
     <script>
         var canvas = document.getElementById('main');
         var ctx = canvas.getContext('2d');
-        var engine = new ParticleEngine(canvas, {particlesAmount: 50, maxVelocity: 0.3});
+        var engine = new ParticleEngine(canvas, {particlesAmount: 30, maxVelocity: 0.3});
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -32,7 +36,6 @@
         }
 
         setInterval(tick, 1000/60);
-
     </script>
 </body>
 </html>

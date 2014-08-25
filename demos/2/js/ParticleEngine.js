@@ -17,10 +17,11 @@
 
         this.createParticles(this.particlesAmount);
 
-        setInterval(this.tick.bind(this), 1000 / this.fps);
-
         var quadBounds = {x:0, y:0, width: canvas.width, height: canvas.height};
+
         this.quad = new QuadTree(0, quadBounds);
+
+        setInterval(this.tick.bind(this), 1000 / this.fps);
     };
 
     /**
@@ -49,17 +50,17 @@
         var length = this.particles.length,
             i;
 
-        for (i = 0; i < length; i++) {
-            var collides = this.quad.retreiveParticle(this.particles[i]);
+        var numChecks = 0;
 
-            var options = {
-                color: (collides.length) ? '255,0,0' : '255,255,255'
-            };
-//            this.particles[i].draw(this.ctx, options);
+        for (i = 0; i < length; i++) {
+
+            var neighbours = this.quad.retreiveParticle(this.particles[i]);
+            var isColliding = this.checkCollision(this.particles[i], neighbours);
             this.particles[i].draw(this.ctx);
         }
 
         this.quad.drawNodeGrid(this.ctx);
+//        this.quad.drawInnerConnections(this.ctx);
     };
 
     /**
@@ -80,6 +81,49 @@
                 length--;
             }
         }
+    };
+
+    function distance(p1, p2) {
+        var dist = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+        return dist;
+    }
+
+    function drawLine(p1, p2, dist, canvas, ctx){
+        var r = (p1.y / canvas.height) * 255;
+        var g = (p2.x / canvas.width) * 255;
+        var b = 3 * (p1.x + p1.y) / (canvas.width + canvas.height) * 255;
+
+        r = (r < 60) ? 60 : r|r;
+        g = (g < 60) ? 60 : g|g;
+        b = (b < 120) ? 120 : b|b;
+
+        ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ', 1)';
+        ctx.beginPath();
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke();
+    }
+
+    function debugLine(p1, p2, color, ctx){
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke();
+    }
+
+    ParticleEngine.prototype.checkCollision = function (particle, neighbours) {
+        var length = neighbours.length,
+            i;
+
+        for (i = 0; i < length; i++) {
+            var dist = distance(particle, neighbours[i]);
+
+            if (dist < 80) {
+                drawLine(particle, neighbours[i], dist, this.canvas, this.ctx);
+            }
+        }
+        return false;
     };
 
     window.ParticleEngine = ParticleEngine;

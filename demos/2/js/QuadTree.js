@@ -12,6 +12,7 @@
 
     QuadTree.prototype.MAX_OBJECTS = 4;
     QuadTree.prototype.MAX_LEVELS = 5;
+    QuadTree.prototype.PARTICLE_SIZE = 80;
 
     QuadTree.prototype.clear = function () {
         this.objects = [];
@@ -25,22 +26,20 @@
         var y = this.bounds.y;
 
         this.nodes = [];
-        this.nodes.push(new QuadTree(this.level+1, {x: x, y:y, width: subWidth, height: subHeight}));
-        this.nodes.push(new QuadTree(this.level+1, {x: x+subWidth, y:y, width: subWidth, height: subHeight}));
-        this.nodes.push(new QuadTree(this.level+1, {x: x+subWidth, y:y+subHeight, width: subWidth, height: subHeight}));
-        this.nodes.push(new QuadTree(this.level+1, {x: x, y:y+subHeight, width: subWidth, height: subHeight}));
+        this.nodes[0] = new QuadTree(this.level+1, {x: x, y:y, width: subWidth, height: subHeight});
+        this.nodes[1] = new QuadTree(this.level+1, {x: x+subWidth, y:y, width: subWidth, height: subHeight});
+        this.nodes[2] = new QuadTree(this.level+1, {x: x+subWidth, y:y+subHeight, width: subWidth, height: subHeight});
+        this.nodes[3] = new QuadTree(this.level+1, {x: x, y:y+subHeight, width: subWidth, height: subHeight});
     };
 
-    QuadTree.prototype.getIndex = function (rect) {
+    QuadTree.prototype.getIndex = function (particle) {
         var verticalMid = this.bounds.y + this.bounds.height / 2;
         var horizontalMid = this.bounds.x + this.bounds.width / 2;
 
-        var topHalf = (rect.y + rect.height < verticalMid);
-        var bottomHalf = (rect.y > verticalMid);
+        var topHalf = ((particle.y + this.PARTICLE_SIZE / 2 <= verticalMid) && (particle.y > this.bounds.y));
+        var bottomHalf = (particle.y - this.PARTICLE_SIZE / 2 > verticalMid) && (particle.y < this.bounds.y + this.bounds.height);
 
-//        console.log('rect index',horizontalMid);
-
-        if (rect.x + rect.width < horizontalMid ) {
+        if (particle.x + this.PARTICLE_SIZE / 2 < horizontalMid ) {
             if (topHalf) {
                 return 0;
             }
@@ -48,7 +47,7 @@
             if (bottomHalf) {
                 return 3;
             }
-        } else if (rect.x > horizontalMid) {
+        } else if (particle.x - this.PARTICLE_SIZE > horizontalMid) {
             if (topHalf) {
                 return 1;
             }
@@ -62,21 +61,19 @@
     };
 
     QuadTree.prototype.insertParticle = function (particle) {
-        var offset = 10;
-        var rect = {x: particle.x - offset, y: particle.y - offset, width: offset * 2, height: offset * 2};
-        this.insert(rect);
+        this.insert(particle);
     };
 
-    QuadTree.prototype.insert = function (rect) {
+    QuadTree.prototype.insert = function (particle) {
         if (this.nodes.length) {
-            var index = this.getIndex(rect);
+            var index = this.getIndex(particle);
 
             if (index !== -1) {
-                return this.nodes[index].insert(rect);
+                return this.nodes[index].insert(particle);
             }
         }
 
-        this.objects.push(rect);
+        this.objects.push(particle);
 
         if (this.objects.length > this.MAX_OBJECTS && this.level < this.MAX_LEVELS) {
             if (this.nodes.length === 0) {
@@ -87,8 +84,7 @@
             while (i < this.objects.length) {
                 var index = this.getIndex(this.objects[i]);
                 if (index !== -1) {
-//                    console.log('inserting into child');
-                    this.nodes[index].insert(this.objects.splice(i,1));
+                    this.nodes[index].insert(this.objects.splice(i,1)[0]);
                 } else {
                     i++;
                 }
@@ -98,20 +94,23 @@
     };
 
     QuadTree.prototype.retreiveParticle = function (particle) {
-        var offset = 10;
-        var rect = {x: particle.x - offset, y: particle.y - offset, width: offset * 2, height: offset * 2};
-//        console.log('rect',rect);
-        return this.retreive(rect);
+        return this.retreive(particle);
     };
 
-    QuadTree.prototype.retreive = function (rect) {
-        var index = this.getIndex(rect);
+    QuadTree.prototype.retreive = function (particle) {
+        var index = this.getIndex(particle);
         var rtObjects = [];
         if (index !== -1 && this.nodes.length) {
-            rtObjects = this.nodes[index].retreive(rect);
+            rtObjects = this.nodes[index].retreive(particle);
         }
 
-        rtObjects = rtObjects.concat(this.objects);
+        if (this.objects.length) {
+            var i, length = this.objects.length;
+            for (i = 0; i < length; i++) {
+                rtObjects.push(this.objects[i]);
+            }
+        }
+
 
         return rtObjects;
     };
@@ -131,8 +130,51 @@
             ctx.moveTo(this.bounds.x, this.bounds.y + this.bounds.height / 2);
             ctx.lineTo(this.bounds.x + this.bounds.width, this.bounds.y + this.bounds.height / 2);
             ctx.stroke();
+
+            text(this.bounds.x + 5, this.bounds.y + (15 * this.level) + 15, this.nodes[0].objects.length, ctx);
+            text(this.bounds.x + this.bounds.width / 2 + 5, this.bounds.y + (15 * this.level) + 15, this.nodes[1].objects.length, ctx);
+            text(this.bounds.x + this.bounds.width / 2 + 5, this.bounds.y + this.bounds.height / 2 + (15 * this.level) + 15, this.nodes[2].objects.length, ctx);
+            text(this.bounds.x + 5, this.bounds.y + this.bounds.height / 2 + (15 * this.level) + 15, this.nodes[3].objects.length, ctx);
+
         }
     };
+
+    QuadTree.prototype.drawInnerConnections = function (ctx) {
+        for (var i in this.nodes) {
+            this.nodes[i].drawInnerConnections(ctx);
+        }
+
+        var length = this.objects.length,
+            j,k;
+        for (j = 0; j < length; j++) {
+            for (k = 0; k < length; k++) {
+                var color;
+                switch (this.level) {
+                    case 0: color= 'red'; break;
+                    case 1: color= 'green'; break;
+                    case 2: color= 'blue'; break;
+                    case 3: color= 'yellow'; break;
+                }
+                debugLine(this.objects[j], this.objects[k], color, ctx);
+            }
+        }
+    };
+
+    function debugLine(p1, p2, color, ctx){
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke();
+    }
+
+    function text(x, y, text, ctx) {
+        ctx.fillStyle = '#fff';
+        ctx.font = '12px sans-serif';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(text, x, y);
+    }
+
 
     window.QuadTree = QuadTree;
 
