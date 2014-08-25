@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Particles</title>
+    <style>
+        body {
+            background: black;
+        }
+        #main {
+            height: 500px;
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="main" width="800" height="500"></canvas>
+
+    <script src="js/Particle.js"></script>
+    <script src="js/QuadTree.js"></script>
+    <script src="js/ParticleEngine.js"></script>
+
+    <script>
+        var canvas = document.getElementById('main');
+        var ctx = canvas.getContext('2d');
+        var engine = new ParticleEngine(canvas, {particlesAmount: 50, maxVelocity: 0.3});
+
+        function tick () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            engine.draw();
+
+        }
+
+        setInterval(tick, 1000/60);
+
+    </script>
+</body>
+</html>
