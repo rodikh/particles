@@ -12,7 +12,7 @@
 
     QuadTree.prototype.MAX_OBJECTS = 4;
     QuadTree.prototype.MAX_LEVELS = 5;
-    QuadTree.prototype.PARTICLE_SIZE = 80;
+    QuadTree.prototype.PARTICLE_SIZE = 50;
 
     QuadTree.prototype.clear = function () {
         this.objects = [];

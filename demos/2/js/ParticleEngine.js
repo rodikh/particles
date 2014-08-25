@@ -119,7 +119,7 @@
         for (i = 0; i < length; i++) {
             var dist = distance(particle, neighbours[i]);
 
-            if (dist < 80) {
+            if (dist < 50) {
                 drawLine(particle, neighbours[i], dist, this.canvas, this.ctx);
             }
         }
