@@ -15,9 +15,11 @@
         this.bounds = bounds;
     };
 
+    Particle.prototype.mass = 1;
     Particle.prototype.hasGravity = false;
     Particle.prototype.gravity = 0.02;
     Particle.prototype.hasBounds = true;
+    Particle.prototype.boundsBehaviour = 'bounce';
     Particle.prototype.isDecaying = false;
     Particle.prototype.color = '255,255,255';
     Particle.prototype.initialVitality = 100;
@@ -28,7 +30,7 @@
         this.move();
 
         if (this.hasBounds) {
-            this.checkBounds();
+            this.stayInBounds();
         }
 
         if (this.isDecaying) {
@@ -36,18 +38,55 @@
         }
     };
 
-    Particle.prototype.checkBounds = function () {
+    Particle.prototype.stayInBounds = function () {
         if (this.x > this.bounds.width) {
-            this.x = 0;
+            if (this.boundsBehaviour === 'bounce') {
+                this.vx = -this.vx;
+                this.x = this.bounds.width;
+            } else {
+                this.x = 0;
+            }
         } else if (this.x < 0) {
-            this.x = this.bounds.width;
+            if (this.boundsBehaviour === 'bounce') {
+                this.vx = -this.vx;
+                this.x = 0;
+            } else {
+                this.x = this.bounds.width;
+            }
         }
 
         if (this.y > this.bounds.height) {
-            this.y = 0;
+            if (this.boundsBehaviour === 'bounce') {
+                this.vy = -this.vy;
+                this.y = this.bounds.height;
+            } else {
+                this.y = 0;
+            }
         } else if (this.y < 0) {
-            this.y = this.bounds.height;
+            if (this.boundsBehaviour === 'bounce') {
+                this.vy = -this.vy;
+                this.y = 0;
+            } else {
+                this.y = this.bounds.height;
+            }
+
         }
+    };
+
+    Particle.prototype.isInBounds = function () {
+        if (this.x > this.bounds.width) {
+            return false;
+        } else if (this.x < 0) {
+            return false;
+        }
+
+        if (this.y > this.bounds.height) {
+            return false;
+        } else if (this.y < 0) {
+            return false;
+        }
+
+        return true;
     };
 
     Particle.prototype.move = function () {
@@ -84,7 +123,9 @@
             var vectorX = field.position.x - this.x;
             var vectorY = field.position.y - this.y;
 
-            // calculate the force via MAGIC and HIGH SCHOOL SCIENCE!
+            // true gravity
+//            var force = GAMMA * (field.mass * this.mass) / Math.pow(distance(this, field.position), 2);
+            // weird gamey gravity
             var force = field.mass / Math.pow(distance(this, field.position), 3);
 
             // add to the total acceleration the force adjusted by distance

@@ -3,25 +3,18 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Particles</title>
-    <style>
-        html, body {
-            background: black;
-            color: white;
-            padding: 0;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="../common/style.css">
 </head>
 <body>
     <canvas id="main" width="800" height="500"></canvas>
 
     <div>resource: http://html5hub.com/build-a-javascript-particle-system/</div>
 
-    <script src="../common/utils.js"></script>
+    <script src="../common/js/utils.js"></script>
 
-    <script src="../common/Particle.js"></script>
-    <script src="../common/ParticleEmitter.js"></script>
-    <script src="../common/ParticleEngine.js"></script>
+    <script src="../common/js/Particle.js"></script>
+    <script src="../common/js/ParticleEmitter.js"></script>
+    <script src="../common/js/ParticleEngine.js"></script>
     <script src="js/Field.js"></script>
 
     <script>
@@ -51,14 +44,6 @@
             }
         }
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-//            canvas.height = window.innerHeight;
-
-            tick();
-        }
-        window.addEventListener('resize', resizeCanvas, false);
-        resizeCanvas();
 
         setInterval(tick, 1000/60);
 

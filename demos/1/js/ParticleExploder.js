@@ -12,7 +12,7 @@
 
         this.ExploderParticle.prototype = Object.create(Particle.prototype);
         this.ExploderParticle.prototype.hasGravity = true;
-        this.ExploderParticle.prototype.hasBounds = false;
+        this.ExploderParticle.prototype.hasBounds = true;
         this.ExploderParticle.prototype.isDecaying = true;
         this.ExploderParticle.prototype.color = '255,255,0';
 
