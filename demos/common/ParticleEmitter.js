@@ -13,8 +13,8 @@
         this.EmitterParticle.prototype = Object.create(Particle.prototype);
         this.EmitterParticle.prototype.hasGravity = false;
         this.EmitterParticle.prototype.hasBounds = false;
-        this.EmitterParticle.prototype.isDecaying = true;
-        this.EmitterParticle.prototype.color = '255,0,0';
+        this.EmitterParticle.prototype.isDecaying = options.isDecaying || false;
+        this.EmitterParticle.prototype.color = '255,255,255';
 
         if (options.particleColor) {
             this.EmitterParticle.prototype.color = options.particleColor;
@@ -22,7 +22,7 @@
 
         this.maxVelocity = options.maxVelocityRandom || 0.3;
         this.point = options.point || {x: 50, y: 50};
-        this.vector = options.vector || {x: 1.5, y: 0};
+        this.vector = options.vector || {x: 3, y: 0};
         this.particles = [];
         this.fps = options.fps || 60;
 
@@ -78,11 +78,6 @@
                 length--;
             }
         }
-
-//        if (this.particles.length === 0) {
-//            clearInterval(this.interval);
-//            this.interval = false;
-//        }
     };
 
     window.ParticleEmitter = ParticleEmitter;

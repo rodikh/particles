@@ -12,7 +12,7 @@
         this.particles = [];
         this.fps = options.fps || 60;
 
-        this.particleLines = true;
+        this.particleLines = options.particleLines || false;
         this.useTree = true;
 
         this.canvas = canvas;
@@ -22,7 +22,9 @@
 
         var quadBounds = {x:0, y:0, width: canvas.width, height: canvas.height};
 
-        this.quad = new QuadTree(0, quadBounds);
+        if (QuadTree) {
+            this.quad = new QuadTree(0, quadBounds);
+        }
 
         setInterval(this.tick.bind(this), 1000 / this.fps);
 
@@ -58,40 +60,33 @@
 
         for (i = 0; i < length; i++) {
             this.particles[i].draw(this.ctx);
-            var neighbours;
-            if (this.useTree) {
-                neighbours = this.quad.retreiveParticle(this.particles[i]);
-            } else {
-                neighbours = this.particles;
-            }
-            numChecks += neighbours.length;
-
             if (this.particleLines) {
-                this.drawParticleLines(this.particles[i], neighbours);
+                numChecks += this.drawParticleLines(this.particles[i]);
             }
         }
 
-        document.getElementById('numChecks').innerHTML = numChecks;
+        if (this.particleLines) {
+            document.getElementById('numChecks').innerHTML = numChecks;
+        }
 
-        if (this.gridLines && this.useTree) {
+        if (this.quad && this.gridLines && this.useTree) {
             this.quad.drawNodeGrid(this.ctx);
         }
 
         if (this.nodeConnections) {
-            if (this.useTree) {
+            if (this.quad && this.useTree) {
                 this.quad.drawInnerConnections(this.ctx);
             } else {
                 length = this.particles.length;
                 var j,k;
                 for (j = 0; j < length; j++) {
                     for (k = j; k < length; k++) {
-                        drawine(this.particles[j], this.particles[k], 'red', ctx);
+                        drawLine(this.particles[j], this.particles[k], 'red', ctx);
                     }
                 }
             }
         }
     };
-
 
     /**
      * Global loop function, draws and moves particles
@@ -100,11 +95,16 @@
         var length = this.particles.length,
             i;
 
-        this.quad.clear();
+        if (this.quad) {
+            this.quad.clear();
+        }
 
         for (i = 0; i < length; i++) {
             this.particles[i].update();
-            this.quad.insertParticle(this.particles[i]);
+            if (this.quad) {
+//                console.log('particle',this.particles[i]);
+                this.quad.insertParticle(this.particles[i]);
+            }
             if (this.particles[i].isDecaying && this.particles[i].vitality < 1) {
                 this.particles.splice(i,1);
                 i--;
@@ -127,7 +127,14 @@
         drawLine(p1, p2, color, ctx);
     }
 
-    ParticleEngine.prototype.drawParticleLines = function (particle, neighbours) {
+    ParticleEngine.prototype.drawParticleLines = function (particle) {
+        var neighbours;
+        if (this.quad && this.useTree) {
+            neighbours = this.quad.retreiveParticle(this.particles[i]);
+        } else {
+            neighbours = this.particles;
+        }
+
         var length = neighbours.length,
             i;
 
@@ -138,7 +145,7 @@
                 distLine(particle, neighbours[i], this.canvas, this.ctx);
             }
         }
-        return false;
+        return neighbours.length;
     };
 
     window.ParticleEngine = ParticleEngine;

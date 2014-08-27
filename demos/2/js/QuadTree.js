@@ -155,18 +155,11 @@
                     case 2: color= 'blue'; break;
                     case 3: color= 'yellow'; break;
                 }
-                debugLine(this.objects[j], this.objects[k], color, ctx);
+                drawLine(this.objects[j], this.objects[k], color, ctx);
             }
         }
     };
 
-    function debugLine(p1, p2, color, ctx){
-        ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(p1.x,p1.y);
-        ctx.lineTo(p2.x,p2.y);
-        ctx.stroke();
-    }
 
     function text(x, y, text, ctx) {
         ctx.fillStyle = '#fff';

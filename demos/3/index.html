@@ -13,39 +13,35 @@
     </style>
 </head>
 <body>
-    <canvas id="main" height="600"></canvas>
+    <canvas id="main" width="800" height="500"></canvas>
 
-    <div>
-        based on: http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
-    </div>
+    <div>resource: http://html5hub.com/build-a-javascript-particle-system/</div>
 
     <script src="../common/utils.js"></script>
 
     <script src="../common/Particle.js"></script>
-    <script src="../common/ParticleEngine.js"></script>
-    <script src="js/ParticleExploder.js"></script>
     <script src="../common/ParticleEmitter.js"></script>
+    <script src="js/Field.js"></script>
 
     <script>
-
         var canvas = document.getElementById('main');
         canvas.width = window.innerWidth;
-
         var ctx = canvas.getContext('2d');
 
-        var engine = new ParticleEngine(canvas);
-        var exploder = new ParticleExploder(canvas);
-        var emitter1 = new ParticleEmitter(canvas, {isDecaying: true});
-        var emitter2 = new ParticleEmitter(canvas, {point: {x:50, y: 100}, particleColor: '0,255,0', isDecaying: true});
-        var emitter3 = new ParticleEmitter(canvas, {point: {x:50, y: 150}, particleColor: '0,0,255', isDecaying: true});
+        var emitter1 = new ParticleEmitter(canvas, {point: {x: 200, y: 300}, vector: {x: 3, y: 0}});
+
+        Particle.prototype.fields = [
+            new Field(canvas, {mass: -400}),
+            new Field(canvas, {position: {x: 400, y: 250}, mass: 200})
+        ];
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            engine.draw();
-            exploder.draw();
             emitter1.draw();
-            emitter2.draw();
-            emitter3.draw();
+
+            for (var i in Particle.prototype.fields) {
+                Particle.prototype.fields[i].draw();
+            }
         }
 
         function resizeCanvas() {
@@ -56,7 +52,6 @@
         }
         window.addEventListener('resize', resizeCanvas, false);
         resizeCanvas();
-
 
         setInterval(tick, 1000/60);
 

@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <title>Particles</title>
     <style>
-        body {
+        html, body {
             background: black;
             color: white;
-        }
-        #main {
-            height: 600px;
-            width: 100%;
+            padding: 0;
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <canvas id="main" width="100" height="600"></canvas>
+    <canvas id="main" height="600"></canvas>
 
     <div class="console">
         <div><input type="checkbox" id="particleLines" checked="checked"><label for="particleLines">Particle Lines</label></div>
@@ -29,14 +27,18 @@
         </div>
     </div>
 
-    <script src="js/Particle.js"></script>
+    <script src="../common/utils.js"></script>
+
+    <script src="../common/Particle.js"></script>
     <script src="js/QuadTree.js"></script>
-    <script src="js/ParticleEngine.js"></script>
+    <script src="../common/ParticleEngine.js"></script>
 
     <script>
         var canvas = document.getElementById('main');
+        canvas.width = window.innerWidth;
         var ctx = canvas.getContext('2d');
-        var engine = new ParticleEngine(canvas, {particlesAmount: 100, maxVelocity: 0.5});
+
+        var engine = new ParticleEngine(canvas, {particleLines: true, particlesAmount: 100, maxVelocity: 0.5});
 
         document.getElementById('useTree').onclick = function (evt) {
             engine.useTree = this.checked;
@@ -57,7 +59,17 @@
 
         }
 
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+//            canvas.height = window.innerHeight;
+
+            tick();
+        }
+        window.addEventListener('resize', resizeCanvas, false);
+        resizeCanvas();
+
         setInterval(tick, 1000/60);
+
     </script>
 </body>
 </html>
