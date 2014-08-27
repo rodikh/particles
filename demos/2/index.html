@@ -38,7 +38,7 @@
         canvas.width = window.innerWidth;
         var ctx = canvas.getContext('2d');
 
-        var engine = new ParticleEngine(canvas, {particleLines: true, particlesAmount: 100, maxVelocity: 0.5});
+        var engine = new ParticleEngine(canvas, {useTree: true, particleLines: true, particlesAmount: 100, maxVelocity: 0.5});
 
         document.getElementById('useTree').onclick = function (evt) {
             engine.useTree = this.checked;

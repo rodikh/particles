@@ -85,7 +85,7 @@
             var vectorY = field.position.y - this.y;
 
             // calculate the force via MAGIC and HIGH SCHOOL SCIENCE!
-            var force = field.mass / Math.pow(vectorX*vectorX+vectorY*vectorY,1.5);
+            var force = field.mass / Math.pow(distance(this, field.position), 3);
 
             // add to the total acceleration the force adjusted by distance
             ax += vectorX * force;

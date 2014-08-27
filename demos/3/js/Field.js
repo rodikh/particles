@@ -14,9 +14,6 @@
         this.ctx = canvas.getContext('2d');
     };
 
-    /**
-     * Draws connecting lines between all particles withing MIN_DISTANCE of each other
-     */
     Field.prototype.draw = function () {
         this.ctx.beginPath();
         this.ctx.arc(this.position.x, this.position.y, 5, 0, 2 * Math.PI, false);

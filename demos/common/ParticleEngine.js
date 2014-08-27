@@ -13,7 +13,7 @@
         this.fps = options.fps || 60;
 
         this.particleLines = options.particleLines || false;
-        this.useTree = true;
+        this.useTree = options.useTree || false;
 
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
@@ -102,7 +102,6 @@
         for (i = 0; i < length; i++) {
             this.particles[i].update();
             if (this.quad) {
-//                console.log('particle',this.particles[i]);
                 this.quad.insertParticle(this.particles[i]);
             }
             if (this.particles[i].isDecaying && this.particles[i].vitality < 1) {
@@ -130,7 +129,7 @@
     ParticleEngine.prototype.drawParticleLines = function (particle) {
         var neighbours;
         if (this.quad && this.useTree) {
-            neighbours = this.quad.retreiveParticle(this.particles[i]);
+            neighbours = this.quad.retreiveParticle(particle);
         } else {
             neighbours = this.particles;
         }

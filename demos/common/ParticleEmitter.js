@@ -12,7 +12,7 @@
 
         this.EmitterParticle.prototype = Object.create(Particle.prototype);
         this.EmitterParticle.prototype.hasGravity = false;
-        this.EmitterParticle.prototype.hasBounds = false;
+        this.EmitterParticle.prototype.hasBounds = options.hasBounds || false;
         this.EmitterParticle.prototype.isDecaying = options.isDecaying || false;
         this.EmitterParticle.prototype.color = '255,255,255';
 

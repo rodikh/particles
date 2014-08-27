@@ -21,6 +21,7 @@
 
     <script src="../common/Particle.js"></script>
     <script src="../common/ParticleEmitter.js"></script>
+    <script src="../common/ParticleEngine.js"></script>
     <script src="js/Field.js"></script>
 
     <script>
@@ -28,16 +29,22 @@
         canvas.width = window.innerWidth;
         var ctx = canvas.getContext('2d');
 
-        var emitter1 = new ParticleEmitter(canvas, {point: {x: 200, y: 300}, vector: {x: 3, y: 0}});
+        var emitter1 = new ParticleEmitter(canvas, {
+            point: {x: 100, y: 400},
+            vector: {x: 3, y: 0}
+        });
+
+//        var engine = new ParticleEngine(canvas, {particlesAmount: 1});
 
         Particle.prototype.fields = [
-            new Field(canvas, {mass: -400}),
-            new Field(canvas, {position: {x: 400, y: 250}, mass: 200})
+            new Field(canvas, {position: {x: 600, y: 150}, mass: -400}),
+            new Field(canvas, {position: {x: 300, y: 320}, mass: 200})
         ];
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             emitter1.draw();
+//            engine.draw();
 
             for (var i in Particle.prototype.fields) {
                 Particle.prototype.fields[i].draw();
