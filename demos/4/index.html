@@ -15,7 +15,7 @@
     <script src="../common/js/Particle.js"></script>
     <script src="../common/js/ParticleEmitter.js"></script>
     <script src="../common/js/ParticleEngine.js"></script>
-    <script src="js/Field.js"></script>
+    <script src="../common/js/Field.js"></script>
 
     <script>
         var canvas = document.getElementById('main');
@@ -30,10 +30,6 @@
         var moonDist = 384.4; // 1000 km
 
         Particle.prototype.hasField = true;
-
-        Particle.prototype.fields = [
-            new Field(canvas, {position: {x: 100, y: 100}, mass: earthM})
-        ];
 
         Particle.prototype.interactWithFields1 = function (fields) {
             if (!fields) {
@@ -75,15 +71,19 @@
         };
 
 
-        var particle = new Particle({x: 100 + moonDist, y: 100},{x: 0, y: moonS}, canvas, {mass: moonM});
+//        var particle = new Particle({x: 100, y: 100},{x: 0, y: 0}, canvas, {mass: earthM});
+//        var particle = new Particle({x: 100 + moonDist, y: 100},{x: 0, y: moonS}, canvas, {mass: moonM});
+        var particle = new Particle({x: 400, y: 60},{x: 1, y: 0}, canvas, {mass: 82});
+        var particle1 = new Particle({x: 400, y: 60 - moonDist / 10},{x: 2.5, y: 0}, canvas, {mass: 1});
+        var particle2 = new Particle({x: 400, y: 400},{x: 0, y: 0}, canvas, {mass: 380});
 
-//        var particle = new Particle({x: 400, y: 50},{x: 3.575, y: 0}, canvas, {mass: 5});
-//        var particle = new Particle({x: 400, y: 50},{x: 1, y: 0}, canvas, {mass: 5});
 
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particle.update();
+            particle1.update();
             particle.draw(ctx);
+            particle1.draw(ctx);
 
             for (var i in Particle.prototype.fields) {
                 Particle.prototype.fields[i].draw();

@@ -20,7 +20,7 @@
     Field.prototype.draw = function () {
         if (this.drawPoint) {
             this.ctx.beginPath();
-            this.ctx.arc(this.position.x, this.position.y, this.mass / 400, 0, 2 * Math.PI, false);
+            this.ctx.arc(this.position.x, this.position.y, Math.abs(this.mass) / 400, 0, 2 * Math.PI, false);
             this.ctx.fillStyle = 'rgba('+ this.color +',1)';
             this.ctx.fill();
         }
