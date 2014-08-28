@@ -15,6 +15,7 @@
     <script src="../common/js/Particle.js"></script>
     <script src="../common/js/ParticleEmitter.js"></script>
     <script src="../common/js/ParticleEngine.js"></script>
+    <script src="../common/js/ParticleExploder.js"></script>
     <script src="../common/js/Field.js"></script>
 
     <script>
@@ -27,6 +28,8 @@
             vector: {x: 3, y: 0}
         });
 
+        var exploder = new ParticleExploder(canvas, {initialVitality: 300, hasGravity: false});
+
         Particle.prototype.fields = [
             new Field(canvas, {position: {x: 600, y: 150}, mass: -400}),
             new Field(canvas, {position: {x: 300, y: 320}, mass: 200})
@@ -35,6 +38,7 @@
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             emitter1.draw();
+            exploder.draw();
 
             for (var i in Particle.prototype.fields) {
                 Particle.prototype.fields[i].draw();

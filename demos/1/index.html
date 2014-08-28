@@ -16,7 +16,7 @@
 
     <script src="../common/js/Particle.js"></script>
     <script src="../common/js/ParticleEngine.js"></script>
-    <script src="js/ParticleExploder.js"></script>
+    <script src="../common/js/ParticleExploder.js"></script>
     <script src="../common/js/ParticleEmitter.js"></script>
 
     <script>
@@ -25,7 +25,7 @@
         var ctx = canvas.getContext('2d');
 
         var engine = new ParticleEngine(canvas);
-        var exploder = new ParticleExploder(canvas);
+        var exploder = new ParticleExploder(canvas, {hasGravity: true});
         var emitter1 = new ParticleEmitter(canvas, {isDecaying: true});
         var emitter2 = new ParticleEmitter(canvas, {point: {x:50, y: 100}, particleColor: '0,255,0', isDecaying: true});
         var emitter3 = new ParticleEmitter(canvas, {point: {x:50, y: 150}, particleColor: '0,0,255', isDecaying: true});

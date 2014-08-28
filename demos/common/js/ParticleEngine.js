@@ -75,7 +75,10 @@
         }
 
         if (this.particleLines) {
-            document.getElementById('numChecks').innerHTML = numChecks;
+            var consoleDiv = document.getElementById('numChecks');
+            if (consoleDiv) {
+                consoleDiv.innerHTML = numChecks;
+            }
         }
 
         if (this.quad && this.gridLines && this.useTree) {
