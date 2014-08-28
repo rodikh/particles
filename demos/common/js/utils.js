@@ -17,6 +17,15 @@ function drawLine(p1, p2, color, ctx){
     ctx.stroke();
 }
 
+function radialGradient (ctx, p1, r1, p2, r2, color1, color2) {
+    var grd = ctx.createRadialGradient(p1.x, p1.y, r1, p2.x, p2.y, r2);
+    grd.addColorStop(0, color1);
+    grd.addColorStop(1, color2);
+    ctx.fillStyle = grd;
+    ctx.arc(p1.x, p1.y, r2, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
 function resizeCanvas() {
     if (typeof tick === 'undefined') {
         return;

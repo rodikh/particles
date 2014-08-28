@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var MAX_SPEED = 10;
+
     var Particle = function (point, velocity, bounds) {
         this.x = point.x;
         this.y = point.y;
@@ -93,6 +95,22 @@
         // add accelleration to velocity
         this.vx += this.ax;
         this.vy += this.ay;
+
+        if (Math.abs(this.vx) > MAX_SPEED) {
+            if (this.vx > 0) {
+                this.vx = MAX_SPEED;
+            } else {
+                this.vx = -MAX_SPEED;
+            }
+        }
+
+        if (Math.abs(this.vy) > MAX_SPEED) {
+            if (this.vy > 0) {
+                this.vy = MAX_SPEED;
+            } else {
+                this.vy = -MAX_SPEED;
+            }
+        }
 
         // add velocity to position
         this.x += this.vx;

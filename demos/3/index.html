@@ -29,6 +29,8 @@
 
 //        var engine = new ParticleEngine(canvas, {particlesAmount: 1});
 
+//        var particle = new Particle({x: 90, y: 100},{x: 0, y: 0}, canvas);
+
         Particle.prototype.fields = [
             new Field(canvas, {position: {x: 600, y: 150}, mass: -400}),
             new Field(canvas, {position: {x: 300, y: 320}, mass: 200})
@@ -38,6 +40,8 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             emitter1.draw();
 //            engine.draw();
+//            particle.update();
+//            particle.draw(ctx);
 
             for (var i in Particle.prototype.fields) {
                 Particle.prototype.fields[i].draw();

@@ -19,6 +19,8 @@
         this.ctx.arc(this.position.x, this.position.y, 5, 0, 2 * Math.PI, false);
         this.ctx.fillStyle = 'rgba('+ this.color +',1)';
         this.ctx.fill();
+
+        radialGradient(this.ctx, this.position, 5, this.position, Math.abs(this.mass), 'rgba('+this.color+',0.3)', 'rgba('+this.color+',0.1)');
     };
 
     window.Field = Field;
