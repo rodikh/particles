@@ -2,7 +2,8 @@
  * Created by rodikh on 8/28/14.
  */
 
-var GAMMA = 0.013;
+//var GAMMA = 6.67384 * Math.pow(10,-11);
+var GAMMA = 4.302 * Math.pow(10,-3);
 
 function distance(p1, p2) {
     var dist = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));

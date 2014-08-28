@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Particles</title>
+    <link rel="stylesheet" href="../common/style.css">
+</head>
+<body>
+    <canvas id="main" height="700"></canvas>
+
+    <div>resource: http://html5hub.com/build-a-javascript-particle-system/</div>
+
+    <script src="../common/js/utils.js"></script>
+
+    <script src="../common/js/Particle.js"></script>
+    <script src="../common/js/ParticleEmitter.js"></script>
+    <script src="../common/js/ParticleEngine.js"></script>
+    <script src="js/Field.js"></script>
+
+    <script>
+        var canvas = document.getElementById('main');
+        canvas.width = window.innerWidth;
+        var ctx = canvas.getContext('2d');
+
+        var earthM = 597;   // kg 10^22
+        var moonM = 7.35;   // kg 10^22
+
+        var moonS = 3.683 / 60;  // 3,683 kilometers per hour
+
+        var moonDist = 384.4; // 1000 km
+
+        Particle.prototype.hasField = true;
+
+        Particle.prototype.fields = [
+            new Field(canvas, {position: {x: 100, y: 100}, mass: earthM})
+        ];
+
+        Particle.prototype.interactWithFields1 = function (fields) {
+            if (!fields) {
+                return;
+            }
+
+            var length = fields.length,
+                    i;
+            // our starting acceleration this frame
+            var ax = 0;
+            var ay = 0;
+
+            // for each passed field
+            for (i = 0; i < length; i++) {
+                var field = fields[i];
+                if (field === this.field) {
+                    continue;
+                }
+
+                // find the distance between the particle and the field
+                var vectorX = field.position.x - this.x;
+                var vectorY = field.position.y - this.y;
+
+//            var force = GAMMA * (field.mass * this.mass) / Math.pow(distance(this, field.position), 2);
+                var realForce = GAMMA * (field.mass * Math.pow(10,22) * this.mass * Math.pow(10,22)) / Math.pow(distance(this, field.position) *  1000 * 1000, 2);
+//            var force = realForce / Math.pow(10, 25) / 4;
+
+//            console.log('force',force);
+
+
+                ax += (vectorX * 1000 * 1000) * realForce / (1000 * 1000);
+                ay += (vectorY * 1000 * 1000) * realForce / (1000 * 1000);
+                console.log('ax',ax);
+            }
+
+            // update our particle's acceleration
+            this.ax = ax;
+            this.ay = ay;
+        };
+
+
+        var particle = new Particle({x: 100 + moonDist, y: 100},{x: 0, y: moonS}, canvas, {mass: moonM});
+
+//        var particle = new Particle({x: 400, y: 50},{x: 3.575, y: 0}, canvas, {mass: 5});
+//        var particle = new Particle({x: 400, y: 50},{x: 1, y: 0}, canvas, {mass: 5});
+
+        function tick () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particle.update();
+            particle.draw(ctx);
+
+            for (var i in Particle.prototype.fields) {
+                Particle.prototype.fields[i].draw();
+            }
+
+//            console.log('dist',distance(particle,Particle.prototype.fields[0].position));
+        }
+
+
+        setInterval(tick, 1000/60);
+
+    </script>
+</body>
+</html>

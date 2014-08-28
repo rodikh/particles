@@ -1,9 +1,13 @@
 (function () {
     'use strict';
 
-    var MAX_SPEED = 10;
+    var MAX_SPEED = Infinity;
 
-    var Particle = function (point, velocity, bounds) {
+    var Particle = function (point, velocity, bounds, options) {
+        if (!options) {
+            options = {};
+        }
+
         this.x = point.x;
         this.y = point.y;
 
@@ -15,12 +19,22 @@
 
         this.vitality = this.initialVitality;
         this.bounds = bounds;
+
+        this.mass = options.mass || 1;
+
+        if (this.hasField) {
+            this.field = new Field(bounds, {position: {x: this.x, y: this.y}, mass: this.mass});
+            if (!Particle.prototype.fields) {
+                Particle.prototype.fields = [];
+            }
+            Particle.prototype.fields.push(this.field);
+        }
     };
 
-    Particle.prototype.mass = 1;
+    Particle.prototype.hasField = false;
     Particle.prototype.hasGravity = false;
     Particle.prototype.gravity = 0.02;
-    Particle.prototype.hasBounds = true;
+    Particle.prototype.hasBounds = false;
     Particle.prototype.boundsBehaviour = 'bounce';
     Particle.prototype.isDecaying = false;
     Particle.prototype.color = '255,255,255';
@@ -116,6 +130,11 @@
         this.x += this.vx;
         this.y += this.vy;
 
+        if (this.field) {
+            this.field.position.x = this.x;
+            this.field.position.y = this.y;
+        }
+
         if (this.hasGravity) {
             this.vy += this.gravity;
         }
@@ -136,17 +155,15 @@
         // for each passed field
         for (i = 0; i < length; i++) {
             var field = fields[i];
+            if (field === this.field) {
+               continue;
+            }
 
             // find the distance between the particle and the field
             var vectorX = field.position.x - this.x;
             var vectorY = field.position.y - this.y;
 
-            // true gravity
-//            var force = GAMMA * (field.mass * this.mass) / Math.pow(distance(this, field.position), 2);
-            // weird gamey gravity
             var force = field.mass / Math.pow(distance(this, field.position), 3);
-
-            // add to the total acceleration the force adjusted by distance
             ax += vectorX * force;
             ay += vectorY * force;
         }
