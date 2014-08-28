@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var MAX_SPEED = Infinity;
+    var MAX_SPEED = 10;
 
     var Particle = function (point, velocity, bounds, options) {
         if (!options) {
@@ -166,8 +166,6 @@
             var force = field.mass / Math.pow(distance(this, field.position), 3);
             ax += vectorX * force;
             ay += vectorY * force;
-
-            console.log('distance', distance(this, field.position));
         }
 
         // update our particle's acceleration

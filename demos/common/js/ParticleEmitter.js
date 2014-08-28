@@ -76,6 +76,15 @@
                 this.particles.splice(i,1);
                 i--;
                 length--;
+            } else {
+                if (this.particles[i].x < 0 ||
+                    this.particles[i].x > this.particles[i].bounds.width ||
+                    this.particles[i].y < 0 ||
+                    this.particles[i].y > this.particles[i].bounds.height) {
+                    this.particles.splice(i,1);
+                    i--;
+                    length--;
+                }
             }
         }
     };

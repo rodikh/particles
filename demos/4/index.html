@@ -22,8 +22,6 @@
         canvas.width = window.innerWidth;
         var ctx = canvas.getContext('2d');
 
-        var earthM = 597;   // kg 10^22
-        var moonM = 7.35;   // kg 10^22
 
         var moonS = 3.683 / 60;  // 3,683 kilometers per hour
 
@@ -38,18 +36,15 @@
 
             var length = fields.length,
                     i;
-            // our starting acceleration this frame
             var ax = 0;
             var ay = 0;
 
-            // for each passed field
             for (i = 0; i < length; i++) {
                 var field = fields[i];
                 if (field === this.field) {
                     continue;
                 }
 
-                // find the distance between the particle and the field
                 var vectorX = field.position.x - this.x;
                 var vectorY = field.position.y - this.y;
 
@@ -57,12 +52,8 @@
                 var realForce = GAMMA * (field.mass * Math.pow(10,22) * this.mass * Math.pow(10,22)) / Math.pow(distance(this, field.position) *  1000 * 1000, 2);
 //            var force = realForce / Math.pow(10, 25) / 4;
 
-//            console.log('force',force);
-
-
                 ax += (vectorX * 1000 * 1000) * realForce / (1000 * 1000);
                 ay += (vectorY * 1000 * 1000) * realForce / (1000 * 1000);
-                console.log('ax',ax);
             }
 
             // update our particle's acceleration
@@ -73,8 +64,8 @@
 
 //        var particle = new Particle({x: 100, y: 100},{x: 0, y: 0}, canvas, {mass: earthM});
 //        var particle = new Particle({x: 100 + moonDist, y: 100},{x: 0, y: moonS}, canvas, {mass: moonM});
-        var particle = new Particle({x: 400, y: 60},{x: 1, y: 0}, canvas, {mass: 82});
-        var particle1 = new Particle({x: 400, y: 60 - moonDist / 10},{x: 2.5, y: 0}, canvas, {mass: 1});
+        var particle = new Particle({x: 400, y: 60},{x: 1.02, y: 0}, canvas, {mass: 82});
+        var particle1 = new Particle({x: 400, y: 60 - moonDist / 10},{x: 2.52, y: 0}, canvas, {mass: 1});
         var particle2 = new Particle({x: 400, y: 400},{x: 0, y: 0}, canvas, {mass: 380});
 
 
@@ -88,13 +79,9 @@
             for (var i in Particle.prototype.fields) {
                 Particle.prototype.fields[i].draw();
             }
-
-//            console.log('dist',distance(particle,Particle.prototype.fields[0].position));
         }
 
-
         setInterval(tick, 1000/60);
-
     </script>
 </body>
 </html>
