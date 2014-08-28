@@ -20,7 +20,7 @@
         this.vitality = this.initialVitality;
         this.bounds = bounds;
 
-        this.mass = options.mass || 1;
+        this.mass = options.mass || this.mass;
 
         if (this.hasField) {
             this.field = new Field(bounds, {position: {x: this.x, y: this.y}, mass: this.mass});
@@ -31,6 +31,7 @@
         }
     };
 
+    Particle.prototype.mass = 1;
     Particle.prototype.hasField = false;
     Particle.prototype.hasGravity = false;
     Particle.prototype.gravity = 0.02;
