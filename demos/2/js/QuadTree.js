@@ -1,9 +1,17 @@
 (function () {
     'use strict';
 
-    var QuadTree = function (level, bounds) {
+    var QuadTree = function (level, bounds, options) {
+        if (!options) {
+            options = {};
+        }
+
+        this.options = options; // for child creation
+
         this.level = level;
         this.bounds = bounds;
+
+        this.itemSize = options.itemSize || 50;
 
         this.objects = [];
         this.nodes = [];
@@ -12,7 +20,6 @@
 
     QuadTree.prototype.MAX_OBJECTS = 4;
     QuadTree.prototype.MAX_LEVELS = 5;
-    QuadTree.prototype.PARTICLE_SIZE = 50;
 
     QuadTree.prototype.clear = function () {
         this.objects = [];
@@ -26,20 +33,20 @@
         var y = this.bounds.y;
 
         this.nodes = [];
-        this.nodes[0] = new QuadTree(this.level+1, {x: x, y:y, width: subWidth, height: subHeight});
-        this.nodes[1] = new QuadTree(this.level+1, {x: x+subWidth, y:y, width: subWidth, height: subHeight});
-        this.nodes[2] = new QuadTree(this.level+1, {x: x+subWidth, y:y+subHeight, width: subWidth, height: subHeight});
-        this.nodes[3] = new QuadTree(this.level+1, {x: x, y:y+subHeight, width: subWidth, height: subHeight});
+        this.nodes[0] = new QuadTree(this.level+1, {x: x, y:y, width: subWidth, height: subHeight}, this.options);
+        this.nodes[1] = new QuadTree(this.level+1, {x: x+subWidth, y:y, width: subWidth, height: subHeight}, this.options);
+        this.nodes[2] = new QuadTree(this.level+1, {x: x+subWidth, y:y+subHeight, width: subWidth, height: subHeight}, this.options);
+        this.nodes[3] = new QuadTree(this.level+1, {x: x, y:y+subHeight, width: subWidth, height: subHeight}, this.options);
     };
 
     QuadTree.prototype.getIndex = function (particle) {
         var verticalMid = this.bounds.y + this.bounds.height / 2;
         var horizontalMid = this.bounds.x + this.bounds.width / 2;
 
-        var topHalf = ((particle.y + this.PARTICLE_SIZE / 2 <= verticalMid) && (particle.y > this.bounds.y));
-        var bottomHalf = (particle.y - this.PARTICLE_SIZE / 2 > verticalMid) && (particle.y < this.bounds.y + this.bounds.height);
+        var topHalf = (particle.y + this.itemSize / 2 <= verticalMid);
+        var bottomHalf = (particle.y - this.itemSize / 2 > verticalMid);
 
-        if (particle.x + this.PARTICLE_SIZE / 2 < horizontalMid ) {
+        if (particle.x + this.itemSize / 2 < horizontalMid) {
             if (topHalf) {
                 return 0;
             }
@@ -47,7 +54,7 @@
             if (bottomHalf) {
                 return 3;
             }
-        } else if (particle.x - this.PARTICLE_SIZE > horizontalMid) {
+        } else if (particle.x - this.itemSize > horizontalMid) {
             if (topHalf) {
                 return 1;
             }

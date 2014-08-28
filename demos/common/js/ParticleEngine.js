@@ -7,10 +7,19 @@
             options = {};
         }
 
+        this.EngineParticle = function (point, velocity, bounds) {
+            Particle.call(this, point, velocity, bounds);
+        };
+
+        this.EngineParticle.prototype = Object.create(Particle.prototype);
+        this.EngineParticle.prototype.hasBounds = options.hasBounds || true;
+        this.EngineParticle.prototype.color = '255,255,255';
+
         this.maxVelocity = options.maxVelocity || 1;
         this.particlesAmount = options.particlesAmount || 100;
         this.particles = [];
         this.fps = options.fps || 60;
+        this.linesMaxLength = options.linesMaxLength || 50;
 
         this.particleLines = options.particleLines || false;
         this.useTree = options.useTree || false;
@@ -23,7 +32,7 @@
         var quadBounds = {x:0, y:0, width: canvas.width, height: canvas.height};
 
         if (QuadTree) {
-            this.quad = new QuadTree(0, quadBounds);
+            this.quad = new QuadTree(0, quadBounds, {itemSize: this.linesMaxLength * 2});
         }
 
         setInterval(this.tick.bind(this), 1000 / this.fps);
@@ -45,7 +54,7 @@
                 x: Math.random() * this.maxVelocity * 2 - this.maxVelocity,
                 y: Math.random() * this.maxVelocity * 2 - this.maxVelocity
             };
-            this.particles.push(new Particle(point, velocity, this.canvas));
+            this.particles.push(new this.EngineParticle(point, velocity, this.canvas));
         }
     };
 
@@ -140,7 +149,7 @@
         for (i = 0; i < length; i++) {
             var dist = distance(particle, neighbours[i]);
 
-            if (dist < 50) {
+            if (dist < this.linesMaxLength) {
                 distLine(particle, neighbours[i], this.canvas, this.ctx);
             }
         }
