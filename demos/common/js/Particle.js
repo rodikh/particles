@@ -156,7 +156,7 @@
         // for each passed field
         for (i = 0; i < length; i++) {
             var field = fields[i];
-            if (field === this.field) {
+            if (field === this.field || field.active === false) {
                continue;
             }
 
