@@ -8,7 +8,7 @@
 
         var self = this;
         this.canvas = canvas;
-        this.field = new Field(canvas, {position: {x: -100, y: -100}, mass: -400});
+        this.field = new Field(canvas, {position: {x: -1000, y: -1000}, mass: -400, active: false});
 
         if (Particle.prototype.fields === undefined) {
             Particle.prototype.fields = [];

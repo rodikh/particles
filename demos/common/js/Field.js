@@ -6,7 +6,7 @@
             options = {};
         }
 
-        this.active = true;
+        this.active = options.active !== false;
         this.position = options.position || {x: 700, y: 300};
         this.mass = options.mass || 100;
 
