@@ -23,6 +23,8 @@
 
         this.particleLines = options.particleLines || false;
         this.useTree = options.useTree || false;
+        this.gridLines = options.gridLines || false;
+        this.nodeConnections = options.nodeConnections || false;
 
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');

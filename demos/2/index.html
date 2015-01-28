@@ -9,17 +9,12 @@
     <canvas id="main" height="600"></canvas>
 
     <div class="console">
-        <div><input type="checkbox" id="particleLines" checked="checked"><label for="particleLines">Particle Lines</label></div>
-        <div><input type="checkbox" id="gridLines"><label for="gridLines">Grid Lines</label></div>
-        <div><input type="checkbox" id="nodeConnections"><label for="nodeConnections">Outline Collision Checks</label></div>
-        <br>
-        <div><input type="checkbox" id="useTree" checked="checked"><label for="useTree">Use Quad Tree for collision detection</label></div>
-        <br>
         <div>
             <span>Number of Checks for collision detection: <span id="numChecks"></span></span>
         </div>
     </div>
 
+    <script type="text/javascript" src="../../bower_components/dat-gui/build/dat.gui.min.js"></script>
     <script src="../common/js/utils.js"></script>
 
     <script src="../common/js/Particle.js"></script>
@@ -33,19 +28,6 @@
 
         var engine = new ParticleEngine(canvas, {useTree: true, particleLines: true, particlesAmount: 100, maxVelocity: 0.5, linesMaxLength: 20});
 
-        document.getElementById('useTree').onclick = function (evt) {
-            engine.useTree = this.checked;
-        };
-        document.getElementById('particleLines').onclick = function (evt) {
-            engine.particleLines = this.checked;
-        };
-        document.getElementById('gridLines').onclick = function (evt) {
-            engine.gridLines = this.checked;
-        };
-        document.getElementById('nodeConnections').onclick = function (evt) {
-            engine.nodeConnections = this.checked;
-        };
-
         function tick () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             engine.draw();
@@ -53,6 +35,14 @@
 
         setInterval(tick, 1000/60);
 
+        if (!window.gui) {
+            window.gui = new dat.GUI();
+        }
+        var folder = gui.addFolder('Particle Lines');
+        folder.add(engine, 'useTree');
+        folder.add(engine, 'particleLines');
+        folder.add(engine, 'gridLines');
+        folder.add(engine, 'nodeConnections');
     </script>
 </body>
 </html>
