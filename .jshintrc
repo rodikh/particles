@@ -35,7 +35,7 @@
     "maxparams": 8,
     "maxlen": 120,
     "maxdepth": 4,
-    "maxstatements": 15,
+    "maxstatements": 20,
     "maxerr": 50,
     "indent": 4,
     "multistr": false,
