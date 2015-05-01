@@ -28,7 +28,7 @@
 
 <script>
     var canvas = document.getElementById('main');
-    canvas.width = window.innerWidth;
+    canvas.width = canvas.parentNode.clientWidth;
     var ctx = canvas.getContext('2d');
 
     var emitter1 = new ParticleEmitter(canvas, {
