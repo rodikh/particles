@@ -8,7 +8,7 @@
         }
 
         this.EngineParticle = function (point, velocity, bounds) {
-            Particle.call(this, point, velocity, bounds);
+            return Particle.call(this, point, velocity, bounds);
         };
 
         this.EngineParticle.prototype = Object.create(Particle.prototype);
