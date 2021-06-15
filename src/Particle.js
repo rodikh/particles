@@ -35,7 +35,7 @@ class Particle {
     }
 
     update() {
-        this.interactWithFields(Field.domain.all);
+        this.interactWithFields(Field.fields);
         this.move();
 
         if (this.stayInBounds) {
