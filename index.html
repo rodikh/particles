@@ -47,9 +47,9 @@
     resizeCanvas();
 
     const engine = new ParticleEngine(bounds, {color: '0,0,0', particleLines: true});
-    // const exploder = new ParticleExploder(bounds, canvas, {gravity: 0.02, color: '0,0,0'});
-    // const emitter1 = new ParticleEmitter({x: 50, y: 50}, {x:3, y:0}, bounds, {color: '0,0,0', isDecaying: false, fps: 30, gravity: 0.02});
-    // const emitter2 = new ParticleEmitter({x:50, y: 100}, {x:3, y:0}, bounds, {color: '0,255,0', isDecaying: true});
+    const exploder = new ParticleExploder(bounds, canvas, {gravity: 0.02, color: '0,0,0'});
+    const emitter1 = new ParticleEmitter({x: 50, y: 50}, {x:3, y:0}, bounds, {color: '0,0,0', isDecaying: false, fps: 30, gravity: 0.02});
+    const emitter2 = new ParticleEmitter({x:50, y: 100}, {x:3, y:0}, bounds, {color: '0,255,0', isDecaying: true});
     const emitter3 = new ParticleEmitter({x:50, y: 150}, {x:3, y:0}, bounds, {color: '0,0,255', isDecaying: true});
 
     // const mouseField = new MouseField(canvas, {});
@@ -57,9 +57,9 @@
     function tick () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         engine.draw(ctx);
-        // exploder.draw(ctx);
-        // emitter1.draw(ctx);
-        // emitter2.draw(ctx);
+        exploder.draw(ctx);
+        emitter1.draw(ctx);
+        emitter2.draw(ctx);
         emitter3.draw(ctx);
     }
     setInterval(tick, 1000/30);

@@ -139,7 +139,9 @@ export default class Particle {
     }
 
     draw(ctx) {
-        this.field.draw(ctx);
+        if (this.hasField) {
+            this.field.draw(ctx);
+        }
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, 1, 0, 2 * Math.PI, false);
