@@ -15,8 +15,10 @@ class ParticleExploder {
         this.particles = [];
 
         canvas.onclick = (evt) => {
-            const point = {x: evt.x - canvas.offsetLeft, y: evt.y - canvas.offsetTop};
-            this.explode(point);
+            const rect = evt.target.getBoundingClientRect();
+            const x = evt.clientX - rect.left; //x position within the element.
+            const y = evt.clientY - rect.top;  //y position within the element.
+            this.explode({x, y});
         }
     }
 

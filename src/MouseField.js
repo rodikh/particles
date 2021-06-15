@@ -13,8 +13,9 @@ class MouseField {
     }
 
     mouseMove (evt) {
-        this.field.position.x = evt.offsetX;
-        this.field.position.y = evt.offsetY;
+        const rect = evt.target.getBoundingClientRect();
+        this.field.position.x = evt.clientX - rect.left;
+        this.field.position.y = evt.clientY - rect.top;
     }
 }
 
