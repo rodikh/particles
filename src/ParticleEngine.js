@@ -120,23 +120,24 @@ class ParticleEngine {
         neighbours.forEach(neighbour => {
             const dist = distance(particle, neighbour);
             if (dist < this.maxLineDistance) {
-                distLine(particle, neighbour, this.bounds, ctx);
+                distLine(particle, neighbour, dist / this.maxLineDistance, this.bounds, ctx);
             }
         });
         return neighbours.length;
     }
 }
 
-function distLine(p1, p2, bounds, ctx){
-    let r = (p1.y / bounds.height) * 255;
-    let g = (p2.x / bounds.width) * 255;
+function distLine(p1, p2, distRatio, bounds, ctx){
+    let r = 100 + (p1.y / bounds.height) * 155;
+    let g = 100 + (p2.x / bounds.width) * 155;
     let b = 3 * (p1.x + p1.y) / (bounds.width + bounds.height) * 255;
 
-    r = (r < 60) ? 60 : r|r;
-    g = (g < 60) ? 60 : g|g;
+    r |= r;
+    g |= g;
     b = (b < 120) ? 120 : b|b;
+    let alpha = Math.min(1 - distRatio, 0.4);
 
-    const color = 'rgba(' + r + ',' + g + ',' + b + ', 1)';
+    const color = `rgba(${r},${g},${b},${alpha})`;
     drawLine(p1, p2, color, ctx);
 }
 
