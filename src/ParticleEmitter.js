@@ -1,14 +1,14 @@
-import Particle from './Particle.js';
+const Particle = require('./Particle.js');
 
-export default class ParticleEmitter {
-    maxVelocity = 0.3;
-    fps = 60;
-    gravity = 0;
-    stayInBounds = false;
-    isDecaying = false;
-    color = '255,255,255';
+class ParticleEmitter {
 
     constructor(point, vector, bounds, options = {}) {
+        this.maxVelocity = 0.3;
+        this.fps = 60;
+        this.gravity = 0;
+        this.stayInBounds = false;
+        this.isDecaying = false;
+        this.color = '255,255,255';
         Object.assign(this, options);
 
         this.point = point;
@@ -59,3 +59,5 @@ export default class ParticleEmitter {
         });
     }
 }
+
+module.exports = ParticleEmitter;

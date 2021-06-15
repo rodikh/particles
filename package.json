@@ -1,6 +1,6 @@
 {
   "name": "@rodikh/particles",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A particle physics system in javascript",
   "main": "src/index.js",
   "private": false,

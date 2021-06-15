@@ -1,6 +1,6 @@
-import Field from "./Field.js";
+const Field = require('./Field.js');
 
-export default class MouseField {
+class MouseField {
     constructor(canvas, options = {}) {
         this.field = new Field({x: -1000, y: -1000}, {mass: -400});
 
@@ -17,3 +17,5 @@ export default class MouseField {
         this.field.position.y = evt.offsetY;
     }
 }
+
+module.exports = MouseField;

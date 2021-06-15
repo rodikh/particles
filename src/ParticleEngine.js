@@ -1,20 +1,21 @@
-import {distance, drawLine} from "./utils.js";
-import Particle from "./Particle.js";
-import QuadTree from "./QuadTree.js";
+const { distance, drawLine } = require('./utils.js');
+const Particle = require('./Particle.js');
+const QuadTree = require('./QuadTree.js');
 
-export default class ParticleEngine {
-    particlesAmount = 100;
-    maxLineDistance = 50;
-    maxVelocity = 1;
-    fps = 60;
-    stayInBounds = true;
-    color = '255,255,255';
-    particleLines = false;
-    useTree = false;
-    gridLines = false;
-    nodeConnections = false;
+class ParticleEngine {
 
     constructor(bounds, options = {}) {
+        this.particlesAmount = 100;
+        this.maxLineDistance = 50;
+        this.maxVelocity = 1;
+        this.fps = 60;
+        this.stayInBounds = true;
+        this.color = '255,255,255';
+        this.particleLines = false;
+        this.useTree = false;
+        this.gridLines = false;
+        this.nodeConnections = false;
+
         Object.assign(this, options);
 
         this.particles = [];
@@ -138,3 +139,5 @@ function distLine(p1, p2, bounds, ctx){
     const color = 'rgba(' + r + ',' + g + ',' + b + ', 1)';
     drawLine(p1, p2, color, ctx);
 }
+
+module.exports = ParticleEngine;

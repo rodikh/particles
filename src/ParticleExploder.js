@@ -1,15 +1,14 @@
-import Particle from "./Particle.js";
+const Particle = require('./Particle.js');
 
-export default class ParticleExploder {
-    particlesAmount = 100;
-    maxVelocity = 1;
-    fps = 60;
-    gravity = 0;
-    stayInBounds = true;
-    isDecaying = true;
-    color = '255,255,0';
-
+class ParticleExploder {
     constructor(bounds, canvas, options = {}) {
+        this.particlesAmount = 100;
+        this.maxVelocity = 1;
+        this.fps = 60;
+        this.gravity = 0;
+        this.stayInBounds = true;
+        this.isDecaying = true;
+        this.color = '255,255,0';
         Object.assign(this, options);
 
         this.bounds = bounds;
@@ -79,3 +78,5 @@ export default class ParticleExploder {
         }
     }
 }
+
+module.exports = ParticleExploder;

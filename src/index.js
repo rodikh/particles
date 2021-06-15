@@ -1,7 +1,9 @@
-export Particle from './Particle'
-export Field from './Field'
-export MouseField from './MouseField'
-export ParticleEmitter from './ParticleEmitter'
-export ParticleEngine from './ParticleEngine'
-export ParticleExploder from './ParticleExploder'
-export QuadTree from './QuadTree'
+module.exports = {
+    Particle: require('./Particle'),
+    Field: require('./Field'),
+    MouseField: require('./MouseField'),
+    ParticleEmitter: require('./ParticleEmitter'),
+    ParticleEngine: require('./ParticleEngine'),
+    ParticleExploder: require('./ParticleExploder'),
+    QuadTree: require('./QuadTree')
+}

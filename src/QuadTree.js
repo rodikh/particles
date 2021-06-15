@@ -1,6 +1,6 @@
-import {drawLine} from "./utils.js";
+const { drawLine } = require('./utils.js');
 
-export default class QuadTree {
+class QuadTree {
     constructor(level, bounds, options = {}) {
         this.options = options; // for child creation
 
@@ -163,3 +163,4 @@ function text(x, y, text, ctx) {
     ctx.fillText(text, x, y);
 }
 
+module.exports = QuadTree;

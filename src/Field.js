@@ -1,12 +1,12 @@
-import { radialGradient } from "./utils.js";
+const { radialGradient } = require('./utils.js');
 
-export default class Field {
-    active = true;
-    mass = 100;
-    drawPoint = true;
-    drawField = true;
-
+class Field {
     constructor(position, options = {}) {
+        this.active = true;
+        this.mass = 100;
+        this.drawPoint = true;
+        this.drawField = true;
+
         this.position = position || {x: 700, y: 300};
         Object.assign(this, options);
         this.color = options.color || this.mass < 0 ? "255,0,0" : "0,255,0";
@@ -25,3 +25,5 @@ export default class Field {
         }
     }
 }
+
+module.exports = Field;

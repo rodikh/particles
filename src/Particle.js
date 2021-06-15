@@ -1,19 +1,20 @@
-import Field from './Field.js';
-import { distance } from './utils.js'
+const Field = require('./Field.js');
+const { distance } = require('./utils.js');
 
 const MAX_SPEED = 10;
 
-export default class Particle {
-    mass = 1;
-    hasField = false;
-    gravity = 0;
-    stayInBounds = false;
-    boundsBehaviour = 'bounce';
-    isDecaying = false;
-    color = '255,255,255';
-    initialVitality = 100;
+class Particle {
+
 
     constructor(point, velocity, bounds, options = {}) {
+        this.mass = 1;
+        this.hasField = false;
+        this.gravity = 0;
+        this.stayInBounds = false;
+        this.boundsBehaviour = 'bounce';
+        this.isDecaying = false;
+        this.color = '255,255,255';
+        this.initialVitality = 100;
         Object.assign(this, options);
 
         this.bounds = bounds;
@@ -150,3 +151,5 @@ export default class Particle {
         ctx.fill();
     }
 }
+
+module.exports = Particle;
