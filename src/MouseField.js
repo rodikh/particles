@@ -3,12 +3,6 @@ const Field = require('./Field.js');
 class MouseField {
     constructor(canvas, options = {}) {
         this.field = new Field({x: -1000, y: -1000}, {mass: -400});
-
-        if (Field.fields === undefined) {
-            Field.fields = [];
-        }
-        Field.fields.push(this.field);
-
         canvas.addEventListener('mousemove', this.mouseMove.bind(this));
     }
 

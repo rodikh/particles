@@ -7,9 +7,15 @@ class Field {
         this.drawPoint = true;
         this.drawField = true;
 
-        this.position = position || {x: 700, y: 300};
+        this.position = position;
         Object.assign(this, options);
         this.color = options.color || this.mass < 0 ? "255,0,0" : "0,255,0";
+
+        // Todo: introduce field domains
+        if (Field.fields === undefined) {
+            Field.fields = [];
+        }
+        Field.fields.push(this);
     }
 
     draw(ctx) {

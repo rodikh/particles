@@ -31,15 +31,11 @@ class Particle {
 
         if (this.hasField) {
             this.field = new Field(bounds, {position: {x: this.x, y: this.y}, mass: this.mass});
-            if (!Field.fields) {
-                Field.fields = [];
-            }
-            Field.fields.push(this.field);
         }
     }
 
     update() {
-        this.interactWithFields(Field.fields);
+        this.interactWithFields(Field.domain.all);
         this.move();
 
         if (this.stayInBounds) {
