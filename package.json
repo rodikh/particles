@@ -1,9 +1,19 @@
 {
-    "name": "rodik.particles",
-    "author": "Rodik Hanukaev",
-    "devDependencies": {
-        "grunt": "0.4.x",
-        "grunt-contrib-jshint": "0.10.*",
-        "grunt-jscs-checker": "0.4.*"
-    }
+  "name": "@rodikh/particles",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodikh/particles.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodikh/particles/issues"
+  },
+  "homepage": "https://github.com/rodikh/particles#readme"
 }

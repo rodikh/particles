@@ -4,16 +4,66 @@
     <meta charset="UTF-8">
     <title>Particles</title>
     <style>
-
+        body {
+        }
     </style>
 </head>
 <body>
-    <h1>Particle Demos:</h1>
-    <ul>
-        <li><a href="demos/1/index.html">Particles, Emitter, Exploder</a></li>
-        <li><a href="demos/2/index.html">QuadTree Grid, Particle lines</a></li>
-        <li><a href="demos/3/index.html">Force Fields</a></li>
-        <li><a href="demos/4/index.html">Astrophysics</a></li>
-    </ul>
+
+    <header class="container-full text-center page-header header-compact">
+        <h1>Particles</h1>
+
+        <h2 class="lead">Particle Emitters</h2>
+    </header>
+    <div class="container page">
+
+        <canvas id="main" height="600"></canvas>
+
+        <div>
+            based on: http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
+        </div>
+    </div>
+
+<script type="module">
+    import ParticleEmitter from "./src/ParticleEmitter.js";
+    import ParticleExploder from "./src/ParticleExploder.js";
+    import MouseField from "./src/MouseField.js";
+    import ParticleEngine from "./src/ParticleEngine.js";
+
+    var canvas = document.getElementById('main');
+    canvas.width = canvas.parentNode.clientWidth;
+    const bounds = {
+        width: canvas.width,
+        height: canvas.height
+    }
+    var ctx = canvas.getContext('2d');
+
+    const resizeCanvas = function () {
+        canvas.width = window.innerWidth;
+        bounds.width = canvas.width;
+    }
+
+    window.addEventListener('resize', resizeCanvas, false);
+    resizeCanvas();
+
+    const engine = new ParticleEngine(bounds, {color: '0,0,0', particleLines: true});
+    // const exploder = new ParticleExploder(bounds, canvas, {gravity: 0.02, color: '0,0,0'});
+    // const emitter1 = new ParticleEmitter({x: 50, y: 50}, {x:3, y:0}, bounds, {color: '0,0,0', isDecaying: false, fps: 30, gravity: 0.02});
+    // const emitter2 = new ParticleEmitter({x:50, y: 100}, {x:3, y:0}, bounds, {color: '0,255,0', isDecaying: true});
+    const emitter3 = new ParticleEmitter({x:50, y: 150}, {x:3, y:0}, bounds, {color: '0,0,255', isDecaying: true});
+
+    // const mouseField = new MouseField(canvas, {});
+
+    function tick () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        engine.draw(ctx);
+        // exploder.draw(ctx);
+        // emitter1.draw(ctx);
+        // emitter2.draw(ctx);
+        emitter3.draw(ctx);
+    }
+    setInterval(tick, 1000/30);
+
+</script>
 </body>
 </html>

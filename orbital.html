@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Particles</title>
+    <style>
+        body {
+        }
+    </style>
+</head>
+<body>
+
+    <header class="container-full text-center page-header header-compact">
+        <h1>Particles</h1>
+
+        <h2 class="lead">Orbital Mechanics</h2>
+    </header>
+    <div class="container page">
+        <canvas id="main" height="600"></canvas>
+    </div>
+
+<script type="module">
+    import Particle from "./src/Particle.js";
+
+    const canvas = document.getElementById('main');
+    canvas.width = canvas.parentNode.clientWidth;
+    const bounds = {
+        width: canvas.width,
+        height: canvas.height
+    }
+    const ctx = canvas.getContext('2d');
+
+    const resizeCanvas = function () {
+        canvas.width = window.innerWidth;
+        bounds.width = canvas.width;
+    }
+
+    window.addEventListener('resize', resizeCanvas, false);
+    resizeCanvas();
+
+    const moonDist = 384.4; // 1000 km
+    const particle = new Particle({x: 400, y: 60}, {x: 1.02, y: 0}, bounds, {mass: 82, hasField: true, color: '0,0,0', });
+    const particle1 = new Particle({x: 400, y: 60 - moonDist / 10}, {x: 2.52, y: 0}, bounds, {mass: 1, hasField: true, color: '0,0,0'});
+    const particle2 = new Particle({x: 400, y: 400}, {x: 0, y: 0}, bounds, {mass: 380, hasField: true, color: '0,0,0'});
+
+    function tick () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particle.update();
+        particle1.update();
+        particle2.update();
+        particle.draw(ctx);
+        particle1.draw(ctx);
+        particle2.draw(ctx);
+    }
+    setInterval(tick, 1000/60);
+
+</script>
+</body>
+</html>
