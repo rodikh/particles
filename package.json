@@ -1,7 +1,7 @@
 {
   "name": "@rodikh/particles",
   "version": "0.1.0",
-  "description": "",
+  "description": "A particle physics system in javascript",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/rodikh/particles.git"
   },
-  "author": "",
+  "author": "Rodik Hanukaev",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rodikh/particles/issues"
